@@ -1,13 +1,13 @@
-﻿using SF_25.Entities;
+﻿using SF_25.DAL.Entitys;
 
-namespace SF_25.DataForDB_
+namespace SF_25.DAL.DataForDB_
 {
     public class GenresData
     {
-        public Genre Genre1 = new Genre { Name = "Фантастика" };
-        public Genre Genre2 = new Genre { Name = "Приключения" };
-        public Genre Genre3 = new Genre { Name = "Детектив" };
-        public Genre Genre4 = new Genre { Name = "Исторический роман" };
+        public GenreEntity Genre1 = new GenreEntity { Name = "Фантастика" };
+        public GenreEntity Genre2 = new GenreEntity { Name = "Приключения" };
+        public GenreEntity Genre3 = new GenreEntity { Name = "Детектив" };
+        public GenreEntity Genre4 = new GenreEntity { Name = "Исторический роман" };
 
         public void Record(AppContext db)
         {

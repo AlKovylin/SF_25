@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SF_25.Entities
+namespace SF_25.DAL.Entitys
 {
-    public class Order
+    public class OrderEntity
     {
         public int Id { get; set; }
         /// <summary>
@@ -24,11 +24,11 @@ namespace SF_25.Entities
         // Внешний ключ
         public int UserId { get; set; }
         // Навигационное свойство
-        public User User { get; set; }
+        public UserEntity User { get; set; }
 
         // Внешний ключ
         public int BookId { get; set; }
         // Навигационное свойство
-        public Book Book { get; set; }
+        public BookEntity Book { get; set; }
     }
 }

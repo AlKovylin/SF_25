@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SF_25.Repository
+namespace SF_25.DAL.Repository
 {
     public class UserRepository
     {
@@ -13,7 +13,7 @@ namespace SF_25.Repository
             {
                 int numberPP = 1;
 
-                var usersQuery = db.Users.OrderBy(u => u.LastName);
+                var usersQuery = db.Users.OrderBy(u => u.LastName).ToList();
 
                 Console.WriteLine("\t\tСПИСОК АБОНЕНТОВ");
                 Console.WriteLine("--------------------------------------------------------------------");

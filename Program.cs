@@ -1,4 +1,4 @@
-﻿using SF_25.Repository;
+﻿using SF_25.DAL.Repository;
 using System;
 
 namespace SF_25
@@ -10,7 +10,7 @@ namespace SF_25
        
         static void Main(string[] args)
         {
-            using (var db = new AppContext())
+            using (var db = new DAL.AppContext())
             {
                 //db.DeletedDB();
                 //if (!db.Exists())
@@ -31,6 +31,7 @@ namespace SF_25
 
             //UR.GetAllUser();
             BR.GetAllBooks();
+            BR.GetAllGenre();
         }
     }
 }

@@ -1,29 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using SF_25.Entities;
+using SF_25.DAL.Entitys;
 
-namespace SF_25
+namespace SF_25.DAL
 {
     public class AppContext : DbContext
     {
         // Объекты таблицы Users
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserEntity> Users { get; set; }
 
         // Объекты таблицы Books
-        public DbSet<Book> Books { get; set; }
+        public DbSet<BookEntity> Books { get; set; }
 
         // Объекты таблицы Authors
-        public DbSet<Author> Authors { get; set; }
+        public DbSet<AuthorEntity> Authors { get; set; }
 
         // Объекты таблицы Genres
-        public DbSet<Genre> Genres { get; set; }
+        public DbSet<GenreEntity> Genres { get; set; }
 
         // Объекты таблицы Orders
-        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderEntity> Orders { get; set; }
 
         // Объекты таблицы Publishing_houses
-        public DbSet<Publishing_house> Publishing_houses { get; set; }
+        public DbSet<Publishing_houseEntity> Publishing_houses { get; set; }
 
         public bool Exists()
         {

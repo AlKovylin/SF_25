@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SF_25.Entities
+namespace SF_25.DAL.Entitys
 {
-    public class Author
+    public class Publishing_houseEntity
     {
         public int Id { get; set; }
         /// <summary>
-        /// Полное имя.
+        /// Название.
         /// </summary>
-        public string Full_name { get; set; }
+        public string Name { get; set; }    
 
         // Навигационное свойство
-        public List<Book> Books { get; set; } = new List<Book>();
+        public List<BookEntity> Books { get; set; } = new List<BookEntity>();
     }
 }

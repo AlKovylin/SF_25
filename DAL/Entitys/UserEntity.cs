@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SF_25.Entities
+namespace SF_25.DAL.Entitys
 {
-    public class User
+    public class UserEntity
     {
         public int Id { get; set; }
         /// <summary>
@@ -25,7 +25,7 @@ namespace SF_25.Entities
         public  string Phone { get; set; }
 
         // Навигационное свойство
-        public List<Order> Orders { get; set; } = new List<Order>();
+        public List<OrderEntity> Orders { get; set; } = new List<OrderEntity>();
 
         
     }

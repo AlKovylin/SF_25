@@ -1,4 +1,4 @@
-﻿namespace SF_25
+﻿namespace SF_25.DAL
 {
     public static class ConnectionString
     {

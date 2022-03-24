@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SF_25.Entities
+namespace SF_25.DAL.Entitys
 {
-    public class Book
+    public class BookEntity
     {
         public int Id { get; set; }
         /// <summary>
@@ -19,19 +19,19 @@ namespace SF_25.Entities
         // Внешний ключ
         public int Publishing_houseId { get; set; }
         // Навигационное свойство
-        public Publishing_house Publishing_house { get; set; }
+        public Publishing_houseEntity Publishing_house { get; set; }
 
         // Внешний ключ
         public int AuthorId { get; set; }
         // Навигационное свойство
-        public Author Author { get; set; }
+        public AuthorEntity Author { get; set; }
 
         // Внешний ключ
         public int GenreId { get; set; }
         // Навигационное свойство
-        public Genre Genre { get; set; }
+        public GenreEntity Genre { get; set; }
 
         // Навигационное свойство
-        public List<Order> Orders { get; set; } = new List<Order>();
+        public List<OrderEntity> Orders { get; set; } = new List<OrderEntity>();
     }
 }
