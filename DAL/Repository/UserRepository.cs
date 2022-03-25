@@ -1,11 +1,13 @@
-﻿using System;
+﻿using SF_25.DAL.Entitys;
+using SF_25.DAL.Interfaces.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace SF_25.DAL.Repository
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         public void GetAllUser()
         {
@@ -27,6 +29,40 @@ namespace SF_25.DAL.Repository
                 }
 
                 Console.WriteLine("--------------------------------------------------------------------");
+            }
+        }
+
+        public List<UserEntity> GetAllUsers()
+        {
+            using (var db = new AppContext())
+            {
+                return db.Users.ToList();
+            }
+        }
+
+        public void AddNewUser(UserEntity user)
+        {
+            using (var db = new AppContext())
+            {
+                db.Users.Add(user);
+                db.SaveChanges();
+            }
+        }
+
+        public void DeleteUser(UserEntity user)
+        {
+            using (var db = new AppContext())
+            {
+                db.Users.Remove(user);
+                db.SaveChanges();
+            }
+        }
+
+        public void UpdatUser()
+        {
+            using (var db = new AppContext())
+            {
+
             }
         }
     }

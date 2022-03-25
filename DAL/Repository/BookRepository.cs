@@ -1,4 +1,6 @@
 ﻿using SF_25.DAL.Entitys;
+using SF_25.DAL.Interfaces.Repository;
+using SF_25.DAL.QueryEntitys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,14 +8,14 @@ using System.Text;
 
 namespace SF_25.DAL.Repository
 {
-    public class BookRepository
+    public class BookRepository : IBookRepository
     {
-        public void GetAllBooks()
+        public List<BookQueryEntity> GetAllBooks()
         {
+            var AllBook = new List<BookQueryEntity>();
+
             using (var db = new AppContext())
             {
-                int numberPP = 1;
-
                 var booksQuery = (from book in db.Books
                                   join author in db.Authors on book.AuthorId equals author.Id
                                   join genre in db.Genres on book.GenreId equals genre.Id
@@ -27,21 +29,19 @@ namespace SF_25.DAL.Repository
                                       Year = book.Year_of_publication
                                   }).ToList();
 
-                Console.WriteLine("\t\tСПИСОК КНИГ");
-                Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------");
-                Console.WriteLine("|№п/п|                  Автор                    |          Название          |        Жанр        |    Изд-во   |Год |");
-                Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------");
-
                 foreach (var book in booksQuery)
                 {
-                    Console.WriteLine("| {0, -2} | {1, -41} | {2, -26} | {3, -18} | {4, -11} |{5, -4}|",
-                                        numberPP, book.Title, book.Author, book.Genre, book.PH, book.Year);
-
-                    numberPP++;
+                    AllBook.Add(new BookQueryEntity
+                    {
+                        Title = book.Title,
+                        Author = book.Author,
+                        Genre = book.Genre,
+                        Publishing_house = book.PH,
+                        Year_of_publication = book.Year.ToString()
+                    });
                 }
-
-                Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------");
             }
+            return AllBook;
         }
 
         public List<GenreEntity> GetAllGenres()
@@ -68,14 +68,6 @@ namespace SF_25.DAL.Repository
             }
         }
 
-        public List<UserEntity> GetAllUsers()
-        {
-            using (var db = new AppContext())
-            {
-                return db.Users.ToList();
-            }
-        }
-        
         public void AddNewBook(BookEntity book)
         {
             using (var db = new AppContext())
@@ -112,38 +104,12 @@ namespace SF_25.DAL.Repository
             }
         }
 
-        public void AddNewUser(UserEntity user)
-        {
-            using (var db = new AppContext())
-            {
-                db.Users.Add(user);
-                db.SaveChanges();
-            }
-        }
-
-        public void DeleteUser(UserEntity user)
-        {
-            using (var db = new AppContext())
-            {
-                db.Users.Remove(user);
-                db.SaveChanges();
-            }
-        }
-
         public void DeleteBook(BookEntity book)
         {
             using (var db = new AppContext())
             {
                 db.Books.Remove(book);
                 db.SaveChanges();
-            }
-        }
-
-        public void UpdatUser()
-        {
-            using (var db = new AppContext())
-            {
-               
             }
         }
     }

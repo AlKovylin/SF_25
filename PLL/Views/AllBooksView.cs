@@ -1,13 +1,23 @@
 ﻿using System.Collections.Generic;
-using SF_25.DAL.Entities;
 using System;
+using SF_25.BLL.Models;
+using SF_25.BLL.Services;
 
 namespace SF_25.PLL.Views
 {
-    public class BooksView
+    public class AllBooksView
     {
-        public void Show(List<BookEntity> books)
+        BooksServices booksServices;
+
+        public AllBooksView(BooksServices booksServices)
         {
+            this.booksServices = booksServices;
+        }
+
+        public void Show()
+        {
+            var books = booksServices.GetAllBook();
+
             int numberPP = 1;
 
             Console.WriteLine("\t\tСПИСОК КНИГ");

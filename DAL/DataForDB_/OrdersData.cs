@@ -3,7 +3,7 @@ using System;
 
 namespace SF_25.DAL.DataForDB_
 {
-    public class OrderEntityData
+    public class OrderData
     {
         public OrderEntity Order1 = new OrderEntity { BookId = 1, UserId = 1, Date_of_issue = new DateTime(2021, 01, 10), Return_date = new DateTime(2021, 01, 20), Flag_return = true };
         public OrderEntity Order2 = new OrderEntity { BookId = 2, UserId = 10, Date_of_issue = new DateTime(2021, 01, 11), Return_date = new DateTime(2021, 01, 21), Flag_return = true };
