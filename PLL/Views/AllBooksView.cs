@@ -6,18 +6,9 @@ using SF_25.BLL.Services;
 namespace SF_25.PLL.Views
 {
     public class AllBooksView
-    {
-        BooksServices booksServices;
-
-        public AllBooksView(BooksServices booksServices)
+    {        
+        public void Show(List<BookModel> books)
         {
-            this.booksServices = booksServices;
-        }
-
-        public void Show()
-        {
-            var books = booksServices.GetAllBook();
-
             int numberPP = 1;
 
             Console.WriteLine("\t\tСПИСОК КНИГ");

@@ -1,4 +1,5 @@
-﻿using SF_25.DAL.Entitys;
+﻿using SF_25.BLL.Exeption;
+using SF_25.DAL.Entitys;
 using SF_25.DAL.Interfaces.Repository;
 using SF_25.DAL.QueryEntitys;
 using System;
@@ -10,6 +11,54 @@ namespace SF_25.DAL.Repository
 {
     public class BookRepository : IBookRepository
     {
+        /*public List<BookQueryEntity> GetBooksSortedTitle()
+        {
+            var AllBook = new List<BookQueryEntity>();
+
+            var booksQuery = GetAllBooks().OrderBy(b => b.Title).ToList();
+
+            foreach (var book in booksQuery)
+            {
+                AllBook.Add(book);
+            }
+
+            return AllBook;
+        }
+        public List<BookQueryEntity> GetBooksSortedYearPublDesc()
+        {
+            var AllBook = new List<BookQueryEntity>();
+
+            var booksQuery = GetAllBooks().OrderBy(b => b.Year_of_publication).ToList();
+
+            foreach (var book in booksQuery)
+            {
+                AllBook.Add(book);
+            }
+
+            return AllBook;
+        }
+
+        private IQueryable<BookQueryEntity> GetAllBooks()
+        {
+            using (var db = new AppContext())
+            {
+                var booksQuery = (from book in db.Books
+                                  join author in db.Authors on book.AuthorId equals author.Id
+                                  join genre in db.Genres on book.GenreId equals genre.Id
+                                  join p in db.Publishing_houses on book.Publishing_houseId equals p.Id
+                                  select new BookQueryEntity
+                                  {
+                                      Title = book.Title,
+                                      Author = author.Full_name,
+                                      Genre = genre.Name,
+                                      Publishing_house = p.Name,
+                                      Year_of_publication = book.Year_of_publication.ToString()
+                                  });
+
+                return booksQuery;
+            }
+        }*/
+
         public List<BookQueryEntity> GetAllBooks()
         {
             var AllBook = new List<BookQueryEntity>();
@@ -20,29 +69,23 @@ namespace SF_25.DAL.Repository
                                   join author in db.Authors on book.AuthorId equals author.Id
                                   join genre in db.Genres on book.GenreId equals genre.Id
                                   join p in db.Publishing_houses on book.Publishing_houseId equals p.Id
-                                  select new
+                                  select new BookQueryEntity
                                   {
-                                      book.Title,
+                                      Title = book.Title,
                                       Author = author.Full_name,
                                       Genre = genre.Name,
-                                      PH = p.Name,
-                                      Year = book.Year_of_publication
+                                      Publishing_house = p.Name,
+                                      Year_of_publication = book.Year_of_publication.ToString()
                                   }).ToList();
 
                 foreach (var book in booksQuery)
                 {
-                    AllBook.Add(new BookQueryEntity
-                    {
-                        Title = book.Title,
-                        Author = book.Author,
-                        Genre = book.Genre,
-                        Publishing_house = book.PH,
-                        Year_of_publication = book.Year.ToString()
-                    });
-                }
+                    AllBook.Add(book);
+                }                
             }
             return AllBook;
         }
+
 
         public List<GenreEntity> GetAllGenres()
         {
@@ -111,6 +154,57 @@ namespace SF_25.DAL.Repository
                 db.Books.Remove(book);
                 db.SaveChanges();
             }
+        }
+
+        public List<BookQueryEntity> GetBooksGenreBetweenYears(string genre_, int year_1, int year_2)
+        {
+            if (!СheckGenre(genre_))
+                throw new ArgumentException();
+
+            if (!(year_1 < year_2))
+                throw new BetweenYearsException();
+
+            var Books = new List<BookQueryEntity>();
+
+            using (var db = new AppContext())
+            {
+                var booksQuery = (from book in db.Books
+                                  join author in db.Authors on book.AuthorId equals author.Id
+                                  join genre in db.Genres on book.GenreId equals genre.Id
+                                  join p in db.Publishing_houses on book.Publishing_houseId equals p.Id
+                                  where genre.Name == genre_
+                                  where book.Year_of_publication >= year_1
+                                  where book.Year_of_publication <= year_2
+                                  select new BookQueryEntity
+                                  {
+                                      Title = book.Title,
+                                      Author = author.Full_name,
+                                      Genre = genre.Name,
+                                      Publishing_house = p.Name,
+                                      Year_of_publication = book.Year_of_publication.ToString()
+                                  })
+                                  .OrderBy(b => b.Year_of_publication)
+                                  .ToList();
+
+                foreach (var book in booksQuery)
+                {
+                    Books.Add(book);
+                }
+            }
+            return Books;
+        }
+
+        public bool СheckGenre(string genre)
+        {
+            List<GenreEntity> genres = GetAllGenres();
+
+            foreach (var gen in genres)
+            {
+                if (gen.Name == genre)
+                    return true;
+            }
+
+            return false;
         }
     }
 }

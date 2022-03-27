@@ -12,8 +12,10 @@ namespace SF_25.DAL.Interfaces.Repository
         void AddNewPublishing_house(Publishing_houseEntity publishing_house);
         void DeleteBook(BookEntity book);
         List<AuthorEntity> GetAllAuthors();
-        List<BookQueryEntity> GetAllBooks();
         List<GenreEntity> GetAllGenres();
         List<Publishing_houseEntity> GetAllPublishing_houses();
+        List<BookQueryEntity> GetBooksGenreBetweenYears(string genre_, int year_1, int year_2);
+        List<BookQueryEntity> GetAllBooks();
+        bool СheckGenre(string genre);
     }
 }

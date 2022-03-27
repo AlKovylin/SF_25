@@ -4,24 +4,30 @@ using System.Text;
 
 namespace SF_25.PLL
 {
-    public class KeyReder
+    public static class KeyReder
     {
-        public string KeyRed()
+        public static string KeyRead()
         {
             ConsoleKeyInfo keyInfo;
+
             string command = "";
 
+            keyInfo = Console.ReadKey();
+
+            command += keyInfo.KeyChar;
+
+            if (keyInfo.Key == ConsoleKey.End)
+            {
+                return "End";
+            }
+                
             do
             {
                 keyInfo = Console.ReadKey();
-                command += keyInfo.Key;
 
-                if (keyInfo.Key == ConsoleKey.End)
-                    break;
+                command += keyInfo.KeyChar;       
             }
             while (keyInfo.Key != ConsoleKey.Enter);
-
-
 
             return command;
         }
