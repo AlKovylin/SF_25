@@ -19,13 +19,25 @@ namespace SF_25.BLL.Services
         }
 
         public List<BookModel> GetBooksSortedTitle()
-        {
-            return GetAllBooks().OrderBy(b => b.Title) as List<BookModel>;
+        {           
+            return ConstructListBook(GetAllBooks().OrderBy(b => b.Title));
         }
 
         public List<BookModel> GetBooksSortedYearPublDesc()
         {
-            return GetAllBooks().OrderByDescending(b => b.Year_of_publication) as List<BookModel>;
+            return ConstructListBook(GetAllBooks().OrderByDescending(b => b.Year_of_publication));
+        }
+
+        private List<BookModel> ConstructListBook(IOrderedEnumerable<BookModel> temp)
+        {
+            var listBooks = new List<BookModel>();
+
+            foreach(var book in temp)
+            {
+                listBooks.Add(book);
+            }
+
+            return listBooks;
         }
 
         private List<BookModel> GetAllBooks()
@@ -68,6 +80,46 @@ namespace SF_25.BLL.Services
             }
 
             return listBooks;
+        }
+
+        public int NumberBooksTheAuthor(string fullName)
+        {
+            return bookRepository.NumberBooksTheAuthor(fullName);
+        }
+
+        public int NumberBooksTheGenre(string name)
+        {
+            return bookRepository.NumberBooksTheGenre(name);
+        }
+
+        public bool СheckAuthorAndTitleBook(string autorFullName, string titleBook)
+        {
+            return bookRepository.СheckAuthorAndTitleBook(autorFullName, titleBook);
+        }
+
+        public bool СheckBookInOrder(string titleBook)
+        {
+            return bookRepository.СheckBookInOrder(titleBook);
+        }
+
+        public string GetNameUserOrderedTheBook(string titleBook)
+        {
+            return bookRepository.GetNameUserOrderedTheBook(titleBook);
+        }
+
+        public bool СheckBook(string title)
+        {
+            return bookRepository.СheckBook(title);
+        }
+
+        public int NumberBooksTheUserHas(string firstName, string lastName)
+        {
+            return bookRepository.NumberBooksTheUserHas(firstName, lastName);
+        }
+
+        public bool CheckUser(string firstName, string lastName)
+        {
+            return bookRepository.CheckUser(firstName, lastName);
         }
     }
 }

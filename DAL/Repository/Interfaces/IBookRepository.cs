@@ -17,5 +17,13 @@ namespace SF_25.DAL.Interfaces.Repository
         List<BookQueryEntity> GetBooksGenreBetweenYears(string genre_, int year_1, int year_2);
         List<BookQueryEntity> GetAllBooks();
         bool СheckGenre(string genre);
+        int NumberBooksTheAuthor(string fullName);
+        int NumberBooksTheGenre(string name);
+        bool СheckAuthorAndTitleBook(string autorFullName, string titleBook);
+        bool СheckBookInOrder(string titleBook);
+        string GetNameUserOrderedTheBook(string titleBook);
+        bool СheckBook(string title);
+        int NumberBooksTheUserHas(string firstName, string lastName);
+        bool CheckUser(string firstName, string lastName);
     }
 }

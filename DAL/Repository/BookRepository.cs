@@ -11,57 +11,9 @@ namespace SF_25.DAL.Repository
 {
     public class BookRepository : IBookRepository
     {
-        /*public List<BookQueryEntity> GetBooksSortedTitle()
-        {
-            var AllBook = new List<BookQueryEntity>();
-
-            var booksQuery = GetAllBooks().OrderBy(b => b.Title).ToList();
-
-            foreach (var book in booksQuery)
-            {
-                AllBook.Add(book);
-            }
-
-            return AllBook;
-        }
-        public List<BookQueryEntity> GetBooksSortedYearPublDesc()
-        {
-            var AllBook = new List<BookQueryEntity>();
-
-            var booksQuery = GetAllBooks().OrderBy(b => b.Year_of_publication).ToList();
-
-            foreach (var book in booksQuery)
-            {
-                AllBook.Add(book);
-            }
-
-            return AllBook;
-        }
-
-        private IQueryable<BookQueryEntity> GetAllBooks()
-        {
-            using (var db = new AppContext())
-            {
-                var booksQuery = (from book in db.Books
-                                  join author in db.Authors on book.AuthorId equals author.Id
-                                  join genre in db.Genres on book.GenreId equals genre.Id
-                                  join p in db.Publishing_houses on book.Publishing_houseId equals p.Id
-                                  select new BookQueryEntity
-                                  {
-                                      Title = book.Title,
-                                      Author = author.Full_name,
-                                      Genre = genre.Name,
-                                      Publishing_house = p.Name,
-                                      Year_of_publication = book.Year_of_publication.ToString()
-                                  });
-
-                return booksQuery;
-            }
-        }*/
-
         public List<BookQueryEntity> GetAllBooks()
         {
-            var AllBook = new List<BookQueryEntity>();
+            var AllBooks = new List<BookQueryEntity>();
 
             using (var db = new AppContext())
             {
@@ -80,10 +32,10 @@ namespace SF_25.DAL.Repository
 
                 foreach (var book in booksQuery)
                 {
-                    AllBook.Add(book);
-                }                
+                    AllBooks.Add(book);
+                }
             }
-            return AllBook;
+            return AllBooks;
         }
 
 
@@ -206,5 +158,183 @@ namespace SF_25.DAL.Repository
 
             return false;
         }
+
+        public bool СheckBook(string title)
+        {
+            bool result;
+
+            using (var db = new AppContext())
+            {
+                result = db.Books.Where(b => b.Title == title).Any();
+            }
+
+            return result;
+        }
+
+        public int NumberBooksTheAuthor(string fullName)
+        {
+            int result = 0;
+
+            using (var db = new AppContext())
+            {
+                result = (from book in db.Books
+                          join author in db.Authors on book.AuthorId equals author.Id
+                          where author.Full_name == fullName
+                          select book)
+                          .Count();
+            }
+
+            return result;
+        }
+
+        public int NumberBooksTheGenre(string name)
+        {
+            int result = 0;
+
+            using (var db = new AppContext())
+            {
+                result = (from book in db.Books
+                          join genre in db.Genres on book.GenreId equals genre.Id
+                          where genre.Name == name
+                          select book)
+                          .Count();
+            }
+
+            return result;
+        }
+
+        public bool СheckAuthorAndTitleBook(string autorFullName, string titleBook)
+        {
+            bool result;
+
+            using (var db = new AppContext())
+            {
+                result = db.Books.Join(db.Authors,
+                        b => b.AuthorId,
+                        a => a.Id,
+                        (b, a) => new
+                        {
+                            book = b.Title,
+                            author = a.Full_name
+                        }
+                        )
+                        .Where(b => b.book == titleBook && b.author == autorFullName)
+                        .Any();
+
+            }
+
+            return result;
+        }
+
+        public bool СheckBookInOrder(string titleBook)
+        {
+            bool result;
+
+            using (var db = new AppContext())
+            {
+                result = db.Books.Join(db.Orders,
+                        b => b.Id,
+                        o => o.BookId,
+                        (b, o) => new
+                        {
+                            b.Title,
+                            o.Flag_return
+                        }
+                        )
+                        .Where(b => b.Title == titleBook && b.Flag_return == false)
+                        .Any();
+            }
+
+            return result;
+        }
+
+        public string GetNameUserOrderedTheBook(string titleBook)
+        {
+            string userName = "";
+
+            using (var db = new AppContext())
+            {
+                var result = db.Books.Join(db.Orders,
+                            b => b.Id,
+                            o => o.BookId,
+                            (b, o) => new
+                            {
+                                b.Title,
+                                o.UserId,
+                                o.Flag_return
+                            }).Join(db.Users,
+                            n => n.UserId,
+                            u => u.Id,
+                            (n, u) => new
+                            {
+                                n.Title,
+                                u.FirstName,
+                                u.LastName,
+                                n.Flag_return
+                            })
+                            .Where(b => b.Title == titleBook && b.Flag_return == false)
+                            .First();
+
+                userName = result.FirstName + " " + result.LastName;
+            }
+
+            return userName;
+        }
+
+        public int NumberBooksTheUserHas(string firstName, string lastName)
+        {
+            int number = 0;
+
+            using (var db = new AppContext())
+            {
+                number = (from order in db.Orders
+                          join user in db.Users on order.UserId equals user.Id
+                          where user.FirstName == firstName && user.LastName == lastName && order.Flag_return == false
+                          select order)
+                          .Count();
+            }
+
+            return number;
+        }
+
+        public bool CheckUser(string firstName, string lastName)
+        {
+            bool result;
+
+            using (var db = new AppContext())
+            {
+                result = db.Users.Where(u => u.FirstName == firstName && u.LastName == lastName).Any();
+            }
+
+            return result;
+        }
+
+        /*public BookQueryEntity LastPublishedBook()
+        {
+            var book_ = new BookQueryEntity();
+
+            using (var db = new AppContext())
+            {
+                var bookQuery = (from book in db.Books
+                                 join author in db.Authors on book.AuthorId equals author.Id
+                                 join genre in db.Genres on book.GenreId equals genre.Id
+                                 join p in db.Publishing_houses on book.Publishing_houseId equals p.Id
+                                 select new
+                                 {
+                                     book.Title,
+                                     Author = author.Full_name,
+                                     Genre = genre.Name,
+                                     Publishing_house = p.Name,
+                                     book.Year_of_publication
+                                 }).Max()
+
+                foreach (var book in booksQuery)
+                {
+                    AllBooks.Add(book);
+                }
+            }
+
+            return book_;
+        }*/
     }
 }

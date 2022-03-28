@@ -1,5 +1,4 @@
 ﻿using SF_25.BLL.Services;
-using SF_25.DAL;
 using SF_25.DAL.Repository;
 using SF_25.PLL;
 using SF_25.PLL.Views;
@@ -11,7 +10,7 @@ namespace SF_25
     {
         static BooksServices booksServices;
         static UsersServices usersServices;
-        //static KeyReder keyReder;
+        //static KeyReader keyReder;
         public static BooksView booksView;
         public static BooksView_1 booksView_1;
         public static AllBooksView allBooksView;
@@ -22,7 +21,7 @@ namespace SF_25
         {
             booksServices = new BooksServices();
             usersServices = new UsersServices();
-            //keyReder = new KeyReder();
+            //keyReder = new KeyReader();
             booksView = new BooksView(booksServices);
             booksView_1 = new BooksView_1(booksServices);
             allBooksView = new AllBooksView();
@@ -47,10 +46,9 @@ namespace SF_25
             Console.WriteLine("Размер консоли: {0}x{1}.", Console.WindowWidth, Console.WindowHeight);
 
             //allBooksView.Show();
+            //usersView.Show();
 
             booksView.Show();
-
-            //booksView_1.Show();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SF_25.PLL
 {
-    public static class KeyReder
+    public static class KeyReader
     {
         public static string KeyRead()
         {
