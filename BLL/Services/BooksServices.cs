@@ -1,4 +1,5 @@
-﻿using SF_25.BLL.Models;
+﻿using SF_25.BLL.Exeption;
+using SF_25.BLL.Models;
 using SF_25.DAL.Interfaces.Repository;
 using SF_25.DAL.QueryEntitys;
 using SF_25.DAL.Repository;
@@ -63,6 +64,9 @@ namespace SF_25.BLL.Services
 
         public List<BookModel> GetBooksGenreBetweenYears(string genre_, int year_1, int year_2)
         {
+            if (year_1 > year_2)
+                throw new BetweenYearsException();
+
             var query = bookRepository.GetBooksGenreBetweenYears(genre_, year_1, year_2);
 
             var listBooks = new List<BookModel>();
@@ -120,6 +124,32 @@ namespace SF_25.BLL.Services
         public bool CheckUser(string firstName, string lastName)
         {
             return bookRepository.CheckUser(firstName, lastName);
+        }
+
+        public List<BookModel> LastPublishedBooks()
+        {
+            var listBookQueryEntity = bookRepository.LastPublishedBooks();
+
+            var listBooks = new List<BookModel>();
+
+            foreach (var book in listBookQueryEntity)
+            {
+                listBooks.Add(new BookModel
+                {
+                    Author = book.Author,
+                    Genre = book.Genre,
+                    Publishing_house = book.Publishing_house,
+                    Title = book.Title,
+                    Year_of_publication = book.Year_of_publication
+                });
+            }
+
+            return listBooks;
+        }
+
+        public bool СheckAuthor(string fullName)
+        {
+            return bookRepository.СheckAuthor(fullName);
         }
     }
 }

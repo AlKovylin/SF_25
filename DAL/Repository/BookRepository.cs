@@ -226,6 +226,18 @@ namespace SF_25.DAL.Repository
             return result;
         }
 
+        public bool СheckAuthor(string fullName)
+        {
+            bool result;
+
+            using (var db = new AppContext())
+            {
+                result = db.Authors.Where(a => a.Full_name == fullName).Any();
+            }
+
+            return result;
+        }
+
         public bool СheckBookInOrder(string titleBook)
         {
             bool result;
@@ -309,12 +321,14 @@ namespace SF_25.DAL.Repository
             return result;
         }
 
-        /*public BookQueryEntity LastPublishedBook()
+        public List<BookQueryEntity> LastPublishedBooks()
         {
-            var book_ = new BookQueryEntity();
+            var books = new List<BookQueryEntity>();
 
             using (var db = new AppContext())
             {
+                var maxYear = db.Books.Max(b => b.Year_of_publication);
+
                 var bookQuery = (from book in db.Books
                                  join author in db.Authors on book.AuthorId equals author.Id
                                  join genre in db.Genres on book.GenreId equals genre.Id
@@ -326,15 +340,23 @@ namespace SF_25.DAL.Repository
                                      Genre = genre.Name,
                                      Publishing_house = p.Name,
                                      book.Year_of_publication
-                                 }).Max()
+                                 })
+                                .Where(x => x.Year_of_publication == maxYear);
 
-                foreach (var book in booksQuery)
+                foreach (var book in bookQuery)
                 {
-                    AllBooks.Add(book);
+                    books.Add( new BookQueryEntity()
+                    {
+                        Title = book.Title,
+                        Author = book.Author,
+                        Genre = book.Genre,
+                        Publishing_house = book.Publishing_house,
+                        Year_of_publication = book.Year_of_publication.ToString()
+                    });
                 }
             }
 
-            return book_;
-        }*/
+            return books;
+        }
     }
 }

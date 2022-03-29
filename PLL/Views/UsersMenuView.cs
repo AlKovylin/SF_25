@@ -5,11 +5,11 @@ using SF_25.BLL.Services;
 
 namespace SF_25.PLL.Views
 {
-    public class UsersView
+    public class UsersMenuView
     {
         UsersServices usersServices;
 
-        public UsersView(UsersServices usersServices)
+        public UsersMenuView(UsersServices usersServices)
         {
             this.usersServices = usersServices;
         }

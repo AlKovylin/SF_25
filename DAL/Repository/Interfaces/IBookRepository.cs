@@ -25,5 +25,7 @@ namespace SF_25.DAL.Interfaces.Repository
         bool СheckBook(string title);
         int NumberBooksTheUserHas(string firstName, string lastName);
         bool CheckUser(string firstName, string lastName);
+        List<BookQueryEntity> LastPublishedBooks();
+        bool СheckAuthor(string fullName);
     }
 }

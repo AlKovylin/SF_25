@@ -5,15 +5,15 @@ using SF_25.BLL.Services;
 
 namespace SF_25.PLL.Views
 {
-    public class AllBooksView
+    public class BooksViewTable
     {        
         public void Show(List<BookModel> books)
         {
             int numberPP = 1;
 
-            Console.WriteLine("\t\tСПИСОК КНИГ");
+            Console.WriteLine("\n                                                  СПИСОК КНИГ");
             Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine("|№п/п|                  Автор                    |          Название          |        Жанр        |    Изд-во   |Год |");
+            Console.WriteLine("|№п/п|                   Название                |             Автор          |        Жанр        |    Изд-во   |Год |");
             Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------");
 
             foreach (var book in books)
@@ -25,6 +25,11 @@ namespace SF_25.PLL.Views
             }
 
             Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------");
+
+            Console.Write("\nДЛЯ ВЫХОДА НАЖМИТЕ ЛЮБУЮ КЛАВИШУ.");
+            Console.ReadKey();
+            Console.Clear();
+            Program.booksViewMenu.Show();
         }
     }
 }

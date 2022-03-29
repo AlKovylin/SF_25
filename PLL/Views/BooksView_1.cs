@@ -1,4 +1,5 @@
-﻿using SF_25.BLL.Services;
+﻿using SF_25.BLL.Exeption;
+using SF_25.BLL.Services;
 using SF_25.PLL.Views.Helpers;
 using System;
 using System.Collections.Generic;
@@ -6,17 +7,14 @@ using System.Text;
 
 namespace SF_25.PLL.Views
 {
-    public class BooksView_1
+    public class BooksView_1 : AbstractBooksView
     {
-        BooksServices booksServices;
+        public BooksView_1(BooksServices booksServices) : base(booksServices) { }
 
-        public BooksView_1(BooksServices booksServices)
+        public override void Show()
         {
-            this.booksServices = booksServices;
-        }
+            Console.Clear();
 
-        public void Show()
-        {
             Console.Write("Введите жанр: ");
 
             string genre = Console.ReadLine();
@@ -27,7 +25,7 @@ namespace SF_25.PLL.Views
             {
                 Console.Write("Введите год от: ");
 
-                if (int.TryParse(Console.ReadLine(), out year_1))
+                if (int.TryParse(Console.ReadLine(), out year_1) && year_1.ToString().Length == 4)
                     break;
                 else
                     AlertMessage.Show("Неверный ввод. Вводите год по образцу: 2022");
@@ -37,35 +35,22 @@ namespace SF_25.PLL.Views
             {
                 Console.Write("Введите год до: ");
 
-                if (int.TryParse(Console.ReadLine(), out year_2))
+                if (int.TryParse(Console.ReadLine(), out year_2) && year_2.ToString().Length == 4)
                     break;
                 else
                     AlertMessage.Show("Неверный ввод. Вводите год по образцу: 2022");
             }
 
-            var books = booksServices.GetBooksGenreBetweenYears(genre, year_1, year_2);
-
-            int numberPP = 1;
-
-            Console.WriteLine("\t\tСПИСОК КНИГ");
-            Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine("|№п/п|                  Автор                    |          Название          |        Жанр        |    Изд-во   |Год |");
-            Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------");
-
-            foreach (var book in books)
+            try
             {
-                Console.WriteLine("| {0, -2} | {1, -41} | {2, -26} | {3, -18} | {4, -11} |{5, -4}|",
-                                  numberPP, book.Title, book.Author, book.Genre, book.Publishing_house, book.Year_of_publication);
-
-                numberPP++;
+                Console.Clear();
+                SuccessMessage.Show($"Выбран жанр: {genre}. Годы выпуска: от {year_1} до {year_2}.");
+                Program.booksViewTable.Show(booksServices.GetBooksGenreBetweenYears(genre, year_1, year_2));
             }
-
-            Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------");
-
-            Console.Write("ДЛЯ ВЫХОДА НАЖМИТЕ ЛЮБУЮ КЛАВИШУ.");
-            Console.ReadKey();
-            Console.Clear();
-            Program.booksView.Show();
+            catch (BetweenYearsException)
+            {
+                AlertMessage.Show("\"Год от\" не может быть больше, чем год \"до\"");
+            }
         }
     }
 }
