@@ -27,9 +27,10 @@ namespace SF_25.PLL.Views
                 Console.WriteLine("   8. Список всех книг, отсортированный в алфавитном порядке по названию.");
                 Console.WriteLine("   9. Список всех книг, отсортированный в порядке убывания года их выхода.");
                 Console.WriteLine("  10. Добавить книгу.");
-                Console.WriteLine("  11. Удалить книгу.");
-                Console.WriteLine("  12. Добавить автора.");
-                Console.WriteLine("  13. Добавить издательство.");
+                Console.WriteLine("  11. Изменить дату выпуска книги по ID.");
+                Console.WriteLine("  12. Удалить книгу.");
+                Console.WriteLine("  13. Добавить автора.");
+                Console.WriteLine("  14. Добавить издательство.");
                 Console.WriteLine("\nВВЕДИТЕ ЦИФРУ ПУНКТА МЕНЮ ИЛИ НАЖМИТЕ \"END\" ДЛЯ ВЫХОДА В ГЛАНОЕ МЕНЮ.");
 
                 if (!flagCheckCommand)
@@ -125,19 +126,34 @@ namespace SF_25.PLL.Views
                             }
                         case 10: 
                             {
+                                Program.booksView_10.Show();
+                                Program.booksView_10.Exit();
+
                                 break;
                             }
                         case 11: 
-                            { 
+                            {
+                                Program.booksView_11.Show();
+                                Program.booksView_11.Exit();
                                 break; 
                             }
                         case 12: 
-                            { 
+                            {
+                                Program.booksView_12.Show();
+                                Program.booksView_12.Exit();
                                 break;
                             }
                         case 13: 
-                            { 
+                            {
+                                Program.booksView_13.Show();
+                                Program.booksView_13.Exit();
                                 break; 
+                            }
+                        case 14:
+                            {
+                                Program.booksView_14.Show();
+                                Program.booksView_14.Exit();
+                                break;
                             }
                         default:
                             {

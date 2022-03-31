@@ -5,20 +5,21 @@ using System.Text;
 
 namespace SF_25.PLL.Views
 {
-    public abstract class AbstractBooksView : AbstractView
+    public abstract class AbstractUsersView : AbstractView
     {
-        public BooksServices booksServices;
+        public UsersServices usersServices;
 
-        public AbstractBooksView(BooksServices booksServices)
+        public AbstractUsersView(UsersServices usersServices)
         {
-            this.booksServices = booksServices;
+            this.usersServices = usersServices;
         }
+
         public override void Exit()
         {
             Console.WriteLine("\nНАЖМИТЕ ЛЮБУЮ КЛАВИШУ.");
             Console.ReadKey();
             Console.Clear();
-            Program.booksViewMenu.Show();
+            Program.usersViewMenu.Show();
         }
     }
 }

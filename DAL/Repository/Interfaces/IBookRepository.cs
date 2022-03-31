@@ -10,7 +10,7 @@ namespace SF_25.DAL.Interfaces.Repository
         void AddNewBook(BookEntity book);
         void AddNewGenre(GenreEntity genre);
         void AddNewPublishing_house(Publishing_houseEntity publishing_house);
-        void DeleteBook(BookEntity book);
+        void DeleteBook(string title);
         List<AuthorEntity> GetAllAuthors();
         List<GenreEntity> GetAllGenres();
         List<Publishing_houseEntity> GetAllPublishing_houses();
@@ -27,5 +27,11 @@ namespace SF_25.DAL.Interfaces.Repository
         bool CheckUser(string firstName, string lastName);
         List<BookQueryEntity> LastPublishedBooks();
         bool СheckAuthor(string fullName);
+        int GetIdAuthor(string name);
+        int GetIdGenre(string name);
+        int GetIdPublishing_house(string name);
+        BookQueryEntity GetBook(string title);
+        BookEntity GetBookEntity(string title);
+        bool EditBookYearPubl(int id, int year);
     }
 }

@@ -35,13 +35,17 @@ namespace SF_25.PLL.Views
                             }
                         case 2:
                             {
+                                Console.Clear();
+                                Program.usersViewMenu.Show();
 
                                 break;
                             }
 
                         case 3:
                             {
-                                
+                                Console.Clear();
+                                Program.ordersViewMenu.Show();
+
                                 break;
                             }
                         case 4:
@@ -54,6 +58,8 @@ namespace SF_25.PLL.Views
                                 {
                                     Console.WriteLine(e.Message);
                                 }
+
+                                Console.Clear();
 
                                 break;
                             }

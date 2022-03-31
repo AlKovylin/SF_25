@@ -6,7 +6,7 @@ namespace SF_25.PLL
     {
         public static void Run()
         {
-            using (var db = new DAL.AppContext())
+            using (var db = new AppContext())
             {
                 db.DeletedDB();
 

@@ -68,6 +68,7 @@ namespace SF_25.DAL.Repository
             using (var db = new AppContext())
             {
                 db.Books.Add(book);
+
                 db.SaveChanges();
             }
         }
@@ -77,6 +78,7 @@ namespace SF_25.DAL.Repository
             using (var db = new AppContext())
             {
                 db.Authors.Add(author);
+
                 db.SaveChanges();
             }
         }
@@ -86,6 +88,7 @@ namespace SF_25.DAL.Repository
             using (var db = new AppContext())
             {
                 db.Genres.Add(genre);
+
                 db.SaveChanges();
             }
         }
@@ -95,15 +98,19 @@ namespace SF_25.DAL.Repository
             using (var db = new AppContext())
             {
                 db.Publishing_houses.Add(publishing_house);
+
                 db.SaveChanges();
             }
         }
 
-        public void DeleteBook(BookEntity book)
+        public void DeleteBook(string title)
         {
             using (var db = new AppContext())
             {
+                var book = GetBookEntity(title);
+
                 db.Books.Remove(book);
+
                 db.SaveChanges();
             }
         }
@@ -345,7 +352,7 @@ namespace SF_25.DAL.Repository
 
                 foreach (var book in bookQuery)
                 {
-                    books.Add( new BookQueryEntity()
+                    books.Add(new BookQueryEntity()
                     {
                         Title = book.Title,
                         Author = book.Author,
@@ -357,6 +364,93 @@ namespace SF_25.DAL.Repository
             }
 
             return books;
+        }
+
+        public int GetIdAuthor(string name)
+        {
+            int id;
+
+            using (var db = new AppContext())
+            {
+                id = db.Authors.Where(a => a.Full_name == name).Select(a => a.Id).First();
+            }
+
+            return id;
+        }
+
+        public int GetIdGenre(string name)
+        {
+            int id;
+
+            using (var db = new AppContext())
+            {
+                id = (db.Genres.Where(g => g.Name == name).Select(g => g.Id)).First();
+            }
+
+            return id;
+        }
+
+
+        public int GetIdPublishing_house(string name)
+        {
+            int id;
+
+            using (var db = new AppContext())
+            {
+                id = db.Publishing_houses.Where(ph => ph.Name == name).Select(ph => ph.Id).First();
+            }
+
+            return id;
+        }
+
+        public BookQueryEntity GetBook(string title)
+        {
+            var Book = new BookQueryEntity();
+
+            using (var db = new AppContext())
+            {
+                Book = (from book in db.Books
+                        join author in db.Authors on book.AuthorId equals author.Id
+                        join genre in db.Genres on book.GenreId equals genre.Id
+                        join p in db.Publishing_houses on book.Publishing_houseId equals p.Id
+                        where book.Title == title
+                        select new BookQueryEntity
+                        {
+                            Title = book.Title,
+                            Author = author.Full_name,
+                            Genre = genre.Name,
+                            Publishing_house = p.Name,
+                            Year_of_publication = book.Year_of_publication.ToString()
+                        }).First();
+            }
+            return Book;
+        }
+
+        public BookEntity GetBookEntity(string title)
+        {
+            using (var db = new AppContext())
+            {
+                return db.Books.Where(b => b.Title == title).First();
+            }                            
+        }
+
+        public bool EditBookYearPubl(int id, int year)
+        {
+            bool result = false;
+
+            using (var db = new AppContext())
+            {
+                var book = db.Books.Where(b => b.Id == id).FirstOrDefault();
+
+                if(book != null)
+                {
+                    book.Year_of_publication = year;
+                    db.SaveChanges();
+                    result = true;
+                }
+            }
+
+            return result;
         }
     }
 }

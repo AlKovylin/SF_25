@@ -2,22 +2,14 @@
 using SF_25.DAL.Entitys;
 using System;
 using SF_25.BLL.Services;
+using SF_25.BLL.Models;
 
 namespace SF_25.PLL.Views
 {
-    public class UsersMenuView
+    public class UsersViewTable
     {
-        UsersServices usersServices;
-
-        public UsersMenuView(UsersServices usersServices)
+        public void Show(List<UserModel> users)
         {
-            this.usersServices = usersServices;
-        }
-
-        public void Show()
-        {
-            var users = usersServices.GetAllUsers();
-
             int numberPP = 1;
 
             Console.WriteLine("\t\tСПИСОК АБОНЕНТОВ");
@@ -33,6 +25,11 @@ namespace SF_25.PLL.Views
             }
 
             Console.WriteLine("--------------------------------------------------------------------");
+
+            Console.Write("\nДЛЯ ВЫХОДА НАЖМИТЕ ЛЮБУЮ КЛАВИШУ.");
+            Console.ReadKey();
+            Console.Clear();
+            Program.usersViewMenu.Show();
         }
     }
 }

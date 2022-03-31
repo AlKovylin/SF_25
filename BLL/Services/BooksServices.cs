@@ -1,5 +1,7 @@
-﻿using SF_25.BLL.Exeption;
+﻿using Microsoft.EntityFrameworkCore;
+using SF_25.BLL.Exeption;
 using SF_25.BLL.Models;
+using SF_25.DAL.Entitys;
 using SF_25.DAL.Interfaces.Repository;
 using SF_25.DAL.QueryEntitys;
 using SF_25.DAL.Repository;
@@ -20,7 +22,7 @@ namespace SF_25.BLL.Services
         }
 
         public List<BookModel> GetBooksSortedTitle()
-        {           
+        {
             return ConstructListBook(GetAllBooks().OrderBy(b => b.Title));
         }
 
@@ -33,7 +35,7 @@ namespace SF_25.BLL.Services
         {
             var listBooks = new List<BookModel>();
 
-            foreach(var book in temp)
+            foreach (var book in temp)
             {
                 listBooks.Add(book);
             }
@@ -150,6 +152,120 @@ namespace SF_25.BLL.Services
         public bool СheckAuthor(string fullName)
         {
             return bookRepository.СheckAuthor(fullName);
+        }
+
+        public List<AuthorModel> GetAllAuthors()
+        {
+            var list = bookRepository.GetAllAuthors();
+
+            var listAuthors = new List<AuthorModel>();
+
+            foreach (var author in list)
+            {
+                listAuthors.Add(new AuthorModel() { Full_name = author.Full_name });
+            }
+
+            return listAuthors;
+        }
+
+        public List<GenresModel> GetAllGenres()
+        {
+            var list = bookRepository.GetAllGenres();
+
+            var listGenres = new List<GenresModel>();
+
+            foreach (var genre in list)
+            {
+                listGenres.Add(new GenresModel() { Name = genre.Name });
+            }
+
+            return listGenres;
+        }
+
+        public List<Publishing_housesModel> GetAllPublishing_houses()
+        {
+            var list = bookRepository.GetAllPublishing_houses();
+
+            var listPH = new List<Publishing_housesModel>();
+
+            foreach (var PH in list)
+            {
+                listPH.Add(new Publishing_housesModel() { Name = PH.Name });
+            }
+
+            return listPH;
+        }
+
+        public void AddNewBook(BookModelAdd book)
+        {
+            var book_ = new BookEntity();
+
+            book_.Title = book.Title;
+            book_.AuthorId = bookRepository.GetIdAuthor(book.Author);
+            book_.GenreId = bookRepository.GetIdGenre(book.Genre);
+            book_.Year_of_publication = book.Year_of_publication;
+            book_.Publishing_houseId = bookRepository.GetIdPublishing_house(book.Publishing_house);
+
+            try
+            {
+                bookRepository.AddNewBook(book_);
+            }
+            catch (DbUpdateException)
+            {
+                throw new FailedToAddException();
+            }
+        }
+
+        public BookModel GetBook(string title)
+        {
+            var book = bookRepository.GetBook(title);
+
+            return new BookModel()
+            {
+                Title = book.Title,
+                Author = book.Author,
+                Genre = book.Genre,
+                Year_of_publication = book.Year_of_publication,
+                Publishing_house = book.Publishing_house
+            };
+        }
+
+        public bool AddNewAuthor(AuthorModel author)
+        {
+            if (!bookRepository.СheckAuthor(author.Full_name))
+            {
+                bookRepository.AddNewAuthor(new AuthorEntity() { Full_name = author.Full_name });
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool AddNewGenre(GenresModel genre)
+        {
+            if (!bookRepository.СheckGenre(genre.Name))
+            {
+                bookRepository.AddNewGenre(new GenreEntity() { Name = genre.Name });
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void DeleteBook(string title)
+        {
+            bookRepository.DeleteBook(title);
+        }
+
+        public bool EditBookYearPubl(int id, int year)
+        {
+            return bookRepository.EditBookYearPubl(id, year);
         }
     }
 }
